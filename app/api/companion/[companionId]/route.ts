@@ -12,6 +12,7 @@ export async function PATCH(
     const body = await req.json();
     const user = await currentUser();
     const { src, name, description, instructions, seed, categoryId } = body;
+    const gender = body.gender || "male";
 
     if (!params.companionId) {
       return new NextResponse("Companion ID is required", { status: 400 })
@@ -42,6 +43,7 @@ export async function PATCH(
         userId: user.id,
         userName: user.firstName,
         src,
+        gender,
         name,
         description,
         instructions,

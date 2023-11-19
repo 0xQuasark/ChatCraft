@@ -17,16 +17,25 @@ dotenv.config({ path: `.env` });
 
 let apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 // console.log('api key', apiKey)
-// const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
+async function textToSpeech(content: string, gender: string) {
 
-async function textToSpeech(content: string) {
+  let voiceGender;
+  // Keeping the below to remind me:
+  // voice is expecting only the supported voices from openai (not sure how)
+  // so on the commented out line, it doesn't work because it's thinking it'll be ANY string
+  // the included line commits me to only using those two supported voices
+  // gender === "male" ? voiceGender = "onyx" : voiceGender = "shimmer";
+  gender === "male" ? voiceGender = "onyx" as const : voiceGender = "shimmer" as const;
+
   const mp3 = await openai.audio.speech.create({
     model: "tts-1",
-    voice: "alloy",
+    voice: voiceGender,
     input: content,
   });
+
+  console.log('used voice: ', voiceGender)
 
   const buffer = Buffer.from(await mp3.arrayBuffer());
   const blob = new Blob([buffer], { type: 'audio/mpeg' });
@@ -35,9 +44,9 @@ async function textToSpeech(content: string) {
   return url;
 }
 
-
 export interface ChatMessageProps {
   role: "system" | "user",
+  gender?: string,
   content?: string,
   isLoading?: boolean,
   src?: string
@@ -47,6 +56,7 @@ export const ChatMessage = ({
   role,
   content,
   isLoading,
+  gender,
   src
 }: ChatMessageProps) => {
   const { toast } = useToast();
@@ -70,10 +80,10 @@ export const ChatMessage = ({
       return;
     }
 
-    const audioUrl = await textToSpeech(content);
+    // textToSpeech function expects a string as its second argument, but gender can be undefined as per ChatMessageProps interface. hence the backup in case it's undefined
+    const audioUrl = await textToSpeech(content, gender || "male");
     const audio = new Audio(audioUrl);
     audio.play();
-  
     toast({
       description: "Message queued to play audio",
     });
@@ -106,16 +116,14 @@ export const ChatMessage = ({
             <Copy className="w-4 h-4" />
           </Button>
           <Button
-          onClick={onPlay} // replace for MVP
-          className="opacity-0 group-hover:opacity-100 transition" // opacity-0 hides it, until the hover
-          size="icon"
-          variant="ghost"
-        >
-          {/* replace following line with Play */}
-          <Play className="w-4 h-4" /> 
-        </Button>
-      </>
-      
+            onClick={onPlay}
+            className="opacity-0 group-hover:opacity-100 transition" // opacity-0 hides it, until the hover
+            size="icon"
+            variant="ghost"
+          >
+            <Play className="w-4 h-4" />
+          </Button>
+        </>
       )}
     </div>
   )

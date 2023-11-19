@@ -37,12 +37,15 @@ export const ChatMessages = ({
     scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]) // this is the scroll reference behaviour, everytime a message is added/changed.
 
+  // console.log('CHAT-MESSAGES.TSX, companion: ', companion);
+
   return (
     <div className="flex-1 overflow-auto pr-4">
       <ChatMessage 
         isLoading={fakeLoading}
         src={companion.src}
         role="system"
+        gender={companion.gender}
         content={`Hello I am ${companion.name}, ${companion.description}`}
       />
       {messages.map((message) => (

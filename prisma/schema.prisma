@@ -21,6 +21,7 @@ model Companion {
   userName      String
   src           String
   name          String @db.Text // can be longer and searchable
+  gender        String @default("male")
   description   String
   instructions  String @db.Text
   seed          String @db.Text
