@@ -84,7 +84,6 @@ export const ChatMessage = ({
     const audioUrl = await textToSpeech(content, gender || "male");
     const audio = new Audio(audioUrl);
     audio.play();
-
     toast({
       description: "Message queued to play audio",
     });
@@ -117,10 +116,10 @@ export const ChatMessage = ({
             <Copy className="w-4 h-4" />
           </Button>
           <Button
-          onClick={onPlay}
-          className="opacity-0 group-hover:opacity-100 transition" // opacity-0 hides it, until the hover
-          size="icon"
-          variant="ghost"
+            onClick={onPlay}
+            className="opacity-0 group-hover:opacity-100 transition" // opacity-0 hides it, until the hover
+            size="icon"
+            variant="ghost"
           >
             <Play className="w-4 h-4" />
           </Button>
