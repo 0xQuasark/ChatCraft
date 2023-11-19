@@ -12,6 +12,15 @@ import prismadb from "@/lib/prismadb";
 
 dotenv.config({ path: `.env` });
 
+function sanitizeString(str: string) {
+  let sanitized = '';
+  for (let i = 0; i < str.length; i++) {
+    if (str.charCodeAt(i) <= 255) {
+      sanitized += str[i];
+    }
+  }
+  return sanitized;
+}
 export async function POST(
   request: Request,
   { params }: { params: { chatId: string } }
@@ -24,7 +33,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const identifier = request.url + "-" + user.id;
+    const identifier = sanitizeString(request.url + "-" + user.id);
     const { success } = await rateLimit(identifier);
 
     if (!success) {
