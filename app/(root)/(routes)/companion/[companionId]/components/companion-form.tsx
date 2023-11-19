@@ -70,6 +70,9 @@ const formSchema = z.object({
   src: z.string().min(1, {
     message: "Image is required",
   }),
+  gender: z.string().min(1, {
+    message: "Gender is required",
+  }),
   categoryId: z.string().min(1, {
     message: "Category is required",
   }),
@@ -120,7 +123,7 @@ export const CompanionForm = ({
       })
       // console.log('Something went wrong: ', err)
     }
-    console.log('[COMPANION_FORM]', values);
+    // console.log('[COMPANION_FORM]', values);
   }
 
   return ( 
@@ -232,6 +235,40 @@ export const CompanionForm = ({
                 </FormItem>
               )}
             />
+
+            <FormField 
+              name="gender"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="bg-background">
+                        <SelectValue 
+                          defaultValue={field.value}
+                          placeholder="Select a gender"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Select the gender for your AI
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
 
           </div>
           <div className="w-full space-y-2">

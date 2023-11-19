@@ -1,8 +1,9 @@
 "use client"
+import dotenv from "dotenv";
 
 import { useTheme } from "next-themes";
 import { BeatLoader } from "react-spinners"
-import { Copy } from "lucide-react";
+import { Copy, Play } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast"
@@ -10,8 +11,42 @@ import { BotAvatar } from "@/components/bot-avatar";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 
+import OpenAI from "openai";
+
+dotenv.config({ path: `.env` });
+
+let apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+// console.log('api key', apiKey)
+const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
+
+async function textToSpeech(content: string, gender: string) {
+
+  let voiceGender;
+  // Keeping the below to remind me:
+  // voice is expecting only the supported voices from openai (not sure how)
+  // so on the commented out line, it doesn't work because it's thinking it'll be ANY string
+  // the included line commits me to only using those two supported voices
+  // gender === "male" ? voiceGender = "onyx" : voiceGender = "shimmer";
+  gender === "male" ? voiceGender = "onyx" as const : voiceGender = "shimmer" as const;
+
+  const mp3 = await openai.audio.speech.create({
+    model: "tts-1",
+    voice: voiceGender,
+    input: content,
+  });
+
+  console.log('used voice: ', voiceGender)
+
+  const buffer = Buffer.from(await mp3.arrayBuffer());
+  const blob = new Blob([buffer], { type: 'audio/mpeg' });
+  const url = URL.createObjectURL(blob);
+
+  return url;
+}
+
 export interface ChatMessageProps {
   role: "system" | "user",
+  gender?: string,
   content?: string,
   isLoading?: boolean,
   src?: string
@@ -21,6 +56,7 @@ export const ChatMessage = ({
   role,
   content,
   isLoading,
+  gender,
   src
 }: ChatMessageProps) => {
   const { toast } = useToast();
@@ -38,6 +74,21 @@ export const ChatMessage = ({
     });
   }
 
+  const onPlay = async () => {
+    if (!content) {
+      // it's ok if the message has no content
+      return;
+    }
+
+    // textToSpeech function expects a string as its second argument, but gender can be undefined as per ChatMessageProps interface. hence the backup in case it's undefined
+    const audioUrl = await textToSpeech(content, gender || "male");
+    const audio = new Audio(audioUrl);
+    audio.play();
+
+    toast({
+      description: "Message queued to play audio",
+    });
+  }
 
   return (
     <div className={cn(
@@ -56,14 +107,24 @@ export const ChatMessage = ({
       </div>
       {role === "user" && <UserAvatar />}
       {role !== "user" && !isLoading && (
-        <Button
-          onClick={onCopy}
+        <>
+          <Button
+            onClick={onCopy}
+            className="opacity-0 group-hover:opacity-100 transition" // opacity-0 hides it, until the hover
+            size="icon"
+            variant="ghost"
+          >
+            <Copy className="w-4 h-4" />
+          </Button>
+          <Button
+          onClick={onPlay}
           className="opacity-0 group-hover:opacity-100 transition" // opacity-0 hides it, until the hover
           size="icon"
           variant="ghost"
-        >
-          <Copy className="w-4 h-4" />
-        </Button>
+          >
+            <Play className="w-4 h-4" />
+          </Button>
+        </>
       )}
     </div>
   )

@@ -21,7 +21,6 @@ export const ImageUpload = ({
 
   useEffect(() => {
     setIsMounted(true);
-    console.log("preset: ", cloudinaryPreset)
   }, []);
 
   // this prevents hydration issues by checking if we're mounted
