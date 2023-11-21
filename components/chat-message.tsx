@@ -19,7 +19,7 @@ let apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 // console.log('api key', apiKey)
 const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
-async function textToSpeech(content: string, gender: string) {
+export async function textToSpeech(content: string, gender: string) {
 
   let voiceGender;
   // Keeping the below to remind me:

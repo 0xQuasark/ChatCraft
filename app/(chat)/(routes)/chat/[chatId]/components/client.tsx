@@ -4,11 +4,13 @@ import { useCompletion } from "ai/react";
 import { FormEvent, useState } from "react";
 import { Companion, Message } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { Toggle } from "@radix-ui/react-toggle";
 
 import { ChatForm } from "@/components/chat-form";
 import { ChatHeader } from "@/components/chat-header";
 import { ChatMessages } from "@/components/chat-messages";
 import { ChatMessageProps } from "@/components/chat-message";
+import { textToSpeech } from "@/components/chat-message"; // bring in the t2s from the chat file
 
 interface ChatClientProps {
   companion: Companion & {
@@ -24,6 +26,11 @@ export const ChatClient = ({
 }: ChatClientProps) => {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatMessageProps[]>(companion.messages);
+  const [isAutoPlay, setIsAutoPlay] = useState(false); // determine the state for the toggle functionality
+
+  const toggleAutoPlay = () => {
+    setIsAutoPlay(!isAutoPlay)
+  }
   
   const {
     input,
@@ -33,7 +40,12 @@ export const ChatClient = ({
     setInput,
   } = useCompletion({
     api: `/api/chat/${companion.id}`,
-    onFinish(_prompt, completion) {
+    onFinish: async (_prompt, completion) => { // this function is now asynchronous
+      if (isAutoPlay) { // IF the autoplay is enabled...
+        const audioUrl = await textToSpeech(completion, companion.gender || "male"); // Convert the text to speech
+        const audio = new Audio(audioUrl);
+        await audio.play(); //play
+      }
       const systemMessage: ChatMessageProps = {
         role: "system",
         content: completion
@@ -65,6 +77,9 @@ export const ChatClient = ({
         isLoading={isLoading}
         messages={messages}
       />
+      <Toggle checked={isAutoPlay} onCheckedChange={toggleAutoPlay}>
+        AutoPlay Audio Response
+      </Toggle>
       <ChatForm 
         isLoading={isLoading} 
         input={input} 
