@@ -13,7 +13,7 @@ import prismadb from "@/lib/prismadb";
 dotenv.config({ path: `.env` });
 
 function sanitizeString(str: string) {
-  let sanitized = ''; 
+  let sanitized = '';
   for (let i = 0; i < str.length; i++) {
     if (str.charCodeAt(i) <= 255) {
       sanitized += str[i];
