@@ -10,7 +10,7 @@ import { ChatForm } from "@/components/chat-form";
 import { ChatHeader } from "@/components/chat-header";
 import { ChatMessages } from "@/components/chat-messages";
 import { ChatMessageProps } from "@/components/chat-message";
-import { textToSpeech } from "@/components/chat-message"; // bring in the t2s from the chat file
+import textToSpeech from "@/components/text-to-speech"; // bring in the t2s from the chat file
 
 interface ChatClientProps {
   companion: Companion & {

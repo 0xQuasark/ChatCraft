@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
     "@clerk/nextjs": "^4.27.1",
     "@hookform/resolvers": "^3.3.2",
     "@pinecone-database/pinecone": "^0.1.6",
