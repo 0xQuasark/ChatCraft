@@ -21,10 +21,10 @@ export class MemoryManager {
 
   public async init() {
     if (this.vectorDBClient instanceof PineconeClient) {
-      await this.vectorDBClient.init({
-        apiKey: process.env.PINECONE_API_KEY!,
-        environment: process.env.PINECONE_ENVIRONMENT!,
-      });
+    await this.vectorDBClient.init({
+      apiKey: process.env.PINECONE_API_KEY!,
+      environment: process.env.PINECONE_ENVIRONMENT!,
+  });
     }
   }
 

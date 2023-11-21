@@ -59,7 +59,7 @@ export async function POST(
       return new NextResponse("Companion not found", { status: 404 });
     }
 
-    const name = companion.id;
+const name = companion.id;
     const companion_file_name = name + ".txt";
 
     const companionKey = {
@@ -67,6 +67,7 @@ export async function POST(
       userId: user.id,
       modelName: "llama2-13b",
     };
+
     const memoryManager = await MemoryManager.getInstance();
 
     const records = await memoryManager.readLatestHistory(companionKey);
@@ -79,12 +80,10 @@ export async function POST(
     await memoryManager.writeToHistory("User: " + prompt + "\n", companionKey);
 
     // Query Pinecone
-
     const recentChatHistory = await memoryManager.readLatestHistory(companionKey);
 
     // Right now the preamble is included in the similarity search, but that
     // shouldn't be an issue
-
     const similarDocs = await memoryManager.vectorSearch(
       recentChatHistory,
       companion_file_name
@@ -157,6 +156,7 @@ export async function POST(
 
     return new StreamingTextResponse(s);
   } catch (error) {
+    console.log("[ROUTE.TS]: Error hit", error)
     return new NextResponse("Internal Error", { status: 500 });
   }
 };
