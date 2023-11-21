@@ -17,10 +17,6 @@ import  textToSpeech from '@/components/text-to-speech';
 
 // dotenv.config({ path: `.env` });
 
-// let apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-// // console.log('api key', apiKey)
-// const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
-
 // export async function textToSpeech(content: string, gender: string) {
 
 //   let voiceGender;
