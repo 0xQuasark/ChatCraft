@@ -1,4 +1,4 @@
-# Pocket Philosopher
+# Chat Craft v1.0
 
 
 
