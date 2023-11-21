@@ -1,5 +1,6 @@
 "use client"
 import dotenv from "dotenv";
+// dotenv.config({ path: `.env` });
 
 import { useTheme } from "next-themes";
 import { BeatLoader } from "react-spinners"
@@ -10,37 +11,37 @@ import { useToast } from "@/components/ui/use-toast"
 import { BotAvatar } from "@/components/bot-avatar";
 import { UserAvatar } from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
-import  textToSpeech from '@/components/text-to-speech';
 
+// import  textToSpeech from '@/components/text-to-speech';
+import OpenAI from "openai";
+const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+console.log('api key', apiKey)
+const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
-// import OpenAI from "openai";
+export async function textToSpeech(content: string, gender: string) {
 
-// dotenv.config({ path: `.env` });
+  let voiceGender;
+  // Keeping the below to remind me:
+  // voice is expecting only the supported voices from openai (not sure how)
+  // so on the commented out line, it doesn't work because it's thinking it'll be ANY string
+  // the included line commits me to only using those two supported voices
+  // gender === "male" ? voiceGender = "onyx" : voiceGender = "shimmer";
+  gender === "male" ? voiceGender = "onyx" as const : voiceGender = "shimmer" as const;
 
-// export async function textToSpeech(content: string, gender: string) {
+  const mp3 = await openai.audio.speech.create({
+    model: "tts-1",
+    voice: voiceGender,
+    input: content,
+  });
 
-//   let voiceGender;
-//   // Keeping the below to remind me:
-//   // voice is expecting only the supported voices from openai (not sure how)
-//   // so on the commented out line, it doesn't work because it's thinking it'll be ANY string
-//   // the included line commits me to only using those two supported voices
-//   // gender === "male" ? voiceGender = "onyx" : voiceGender = "shimmer";
-//   gender === "male" ? voiceGender = "onyx" as const : voiceGender = "shimmer" as const;
+  console.log('used voice: ', voiceGender)
 
-//   const mp3 = await openai.audio.speech.create({
-//     model: "tts-1",
-//     voice: voiceGender,
-//     input: content,
-//   });
+  const buffer = Buffer.from(await mp3.arrayBuffer());
+  const blob = new Blob([buffer], { type: 'audio/mpeg' });
+  const url = URL.createObjectURL(blob);
 
-//   console.log('used voice: ', voiceGender)
-
-//   const buffer = Buffer.from(await mp3.arrayBuffer());
-//   const blob = new Blob([buffer], { type: 'audio/mpeg' });
-//   const url = URL.createObjectURL(blob);
-
-//   return url;
-// }
+  return url;
+}
 
 export interface ChatMessageProps {
   role: "system" | "user",
@@ -83,6 +84,7 @@ export const ChatMessage = ({
 
     // textToSpeech function expects a string as its second argument, but gender can be undefined as per ChatMessageProps interface. hence the backup in case it's undefined
     const audioUrl = await textToSpeech(content, gender || "male");
+    // console.log('I did this instead')
     const audio = new Audio(audioUrl);
     audio.play();
   }

@@ -46,7 +46,7 @@ export const SearchInput = () => {
       // this is the search input
         onChange={onChange}
         value={value}
-        placeholder="Search..."
+        placeholder="Search...S"
         className="pl-10 bg-primary/10"
       />
     </div>
