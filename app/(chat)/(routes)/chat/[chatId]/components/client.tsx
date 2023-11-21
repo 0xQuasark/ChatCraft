@@ -4,7 +4,7 @@ import { useCompletion } from "ai/react";
 import { FormEvent, useState } from "react";
 import { Companion, Message } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { Toggle } from "@radix-ui/react-toggle";
+import { Toggle } from "@/components/ui/toggle";
 
 import { ChatForm } from "@/components/chat-form";
 import { ChatHeader } from "@/components/chat-header";
@@ -77,7 +77,7 @@ export const ChatClient = ({
         isLoading={isLoading}
         messages={messages}
       />
-      <Toggle checked={isAutoPlay} onCheckedChange={toggleAutoPlay}>
+      <Toggle checked={isAutoPlay} onCheckedChange={toggleAutoPlay} className={isAutoPlay ? 'bg-green-200' : 'bg-red-200'}>
         AutoPlay Audio Response
       </Toggle>
       <ChatForm 
