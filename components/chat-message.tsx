@@ -1,6 +1,6 @@
 "use client"
 import dotenv from "dotenv";
-// dotenv.config({ path: `.env` });
+dotenv.config({ path: `.env` });
 
 import { useTheme } from "next-themes";
 import { BeatLoader } from "react-spinners"
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 // import  textToSpeech from '@/components/text-to-speech';
 import OpenAI from "openai";
 const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-console.log('api key', apiKey)
+// console.log('api key', apiKey)
 const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
 export async function textToSpeech(content: string, gender: string) {

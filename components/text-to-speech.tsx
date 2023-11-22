@@ -1,7 +1,7 @@
-import OpenAI from "openai";
+import { OpenAI } from 'openai';
 
 const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-console.log('api key', apiKey)
+// console.log('api key', apiKey)
 const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 
 async function textToSpeech(content: string, gender: string) {
