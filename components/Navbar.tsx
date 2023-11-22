@@ -35,7 +35,7 @@ export const Navbar = ({
             "hidden md:block text-xl md:text-3xl font-bold text-primary",
             font.className
             )}>
-            Pocket Philosopher
+            Chat Craft
           </h1>
         </Link>
       </div>
