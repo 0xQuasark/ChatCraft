@@ -1,6 +1,13 @@
 # Chat Craft v1.0
 
+## Problem Domain
+An Application where you can create, edit, and engage with your own AI companion!
+- Get hands on experience and a deeper understanding of implementing changes to a complex codebase
+- Enhance knowledge of coding principles at scale
+- Deepen our knowledge of a contemporary tech stack
 
+## UML
+![UML of tech stack](public/uml.png)
 
 ## Tech stack
 - Tailwind CSS
@@ -30,7 +37,6 @@
 ## Follow ups
 - [Dark/light mode force](https://youtu.be/PjYWpd7xkaM?si=_sexRnuKEeW0uq93&t=3078)
 - what are hydration issues [here](https://youtu.be/PjYWpd7xkaM?si=0Bt8LpIcSKbrTvra&t=7322)
-
 
 
 
