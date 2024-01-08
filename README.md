@@ -8,7 +8,7 @@ The rationale of this project includes:
 - Deepen our knowledge of a contemporary tech stack
 
 ## Deployed App
-The app can be used here: [chat-craft.vercel.app](chat-craft.vercel.app)
+The app can be used here: [chat-craft.vercel.app](https://chat-craft.vercel.app)
 
 If you're wanting to upgrade to Pro, use the following Credit Card details:
 
