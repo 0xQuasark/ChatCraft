@@ -7,6 +7,13 @@ The rationale of this project includes:
 - Enhance knowledge of coding principles at scale
 - Deepen our knowledge of a contemporary tech stack
 
+## Deployed App
+The app can be used here: [chat-craft.vercel.app](chat-craft.vercel.app)
+
+If you're wanting to upgrade to Pro, use the following Credit Card details:
+
+
+
 ## UML
 ![UML of tech stack](public/uml.png)
 
